@@ -62,3 +62,5 @@ def admin():
             reader = csv.DictReader(f)
             bookings = list(reader
     return render_template('admin.html', bookings=bookings)
+    templates/index.html
+    
