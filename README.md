@@ -58,5 +58,5 @@ def admin():
     if os.path.exists(file_path):
         with open(file_path, newline='') as f:
             reader = csv.DictReader(f)
-            bookings = list(reader)
+            bookings = list(reader
     return render_template('admin.html', bookings=bookings)
