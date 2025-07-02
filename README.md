@@ -1,3 +1,37 @@
+from flask import Flask, render_template, request, redirect
+import csv
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/book', methods=['GET', 'POST'])
+def book():
+    if request.method == 'POST':
+        booking = {
+            'name': request.form['name'],
+            'phone': request.form['phone'],
+            'city': request.form['city'],
+            'description': request.form['description']
+        }
+        file_exists = os.path.isfile('data/bookings.csv')
+        with open('data/bookings.csv', 'a', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=booking.keys())
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow(booking)
+        return redirect('/')
+    return render_template('book.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
 templates/index.html
 <!DOCTYPE html>
 <html lang="en">
