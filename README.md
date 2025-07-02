@@ -203,5 +203,3 @@ header {
     background: #0078D7;
     color: white;
     border: none;
-}
-python-3.10
