@@ -63,4 +63,4 @@ def admin():
             bookings = list(reader
     return render_template('admin.html', bookings=bookings)
     templates/index.html
-    
+    3215a4420ac13ce93cc63975255494cd0b68b899
