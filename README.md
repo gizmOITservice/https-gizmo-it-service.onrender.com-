@@ -1,205 +1,182 @@
-from flask import Flask, render_template, request, redirect
-import csv
+# Create a full website package as a ZIP file with index.html and placeholder images
+
 import os
+from zipfile import ZipFile
 
-app = Flask(__name__)
+# Directory structure
+base_path = "/mnt/data/the_gizmo_website"
+os.makedirs(base_path, exist_ok=True)
+gallery_path = os.path.join(base_path, "images")
+os.makedirs(gallery_path, exist_ok=True)
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/book', methods=['GET', 'POST'])
-def book():
-    if request.method == 'POST':
-        booking = {
-            'name': request.form['name'],
-            'phone': request.form['phone'],
-            'city': request.form['city'],
-            'description': request.form['description']
-        }
-        file_exists = os.path.isfile('data/bookings.csv')
-        with open('data/bookings.csv', 'a', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=booking.keys())
-            if not file_exists:
-                writer.writeheader()
-            writer.writerow(booking)
-        return redirect('/')
-    return render_template('book.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
-templates/index.html
-<!DOCTYPE html>
+# Create index.html
+index_html = """<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>The GizmO IT Service</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The GizmO IT Service | Bangalore & Mysore</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body { scroll-behavior: smooth; }
+    header {
+      background: #004080;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .nav-link { color: white !important; }
+    .cta-btn {
+      background: #ff8000;
+      color: white;
+    }
+    .service-card, .gallery-img {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    footer {
+      background: #222;
+      color: #ddd;
+      padding: 1rem;
+      text-align: center;
+    }
+    .gallery-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 24px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .whatsapp-button:hover {
+      background-color: #1ebc59;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="The GizmO Logo" class="logo">
-        <h1>The GizmO IT Service</h1>
-        <p>Computer Repair & IT Services - Bangalore and Mysore</p>
-        <a href="https://wa.me/918431944493" class="cta-button">WhatsApp Us</a>
-    </header>
 
-    <section class="services">
-        <h2>Our Services</h2>
-        <ul>
-            <li>Laptop Repair & Speed Upgrade</li>
-            <li>Motherboard Upgrade & Repair</li>
-            <li>Virus & Malware Removal</li>
-            <li>Software Installation & Updates</li>
-            <li>MacBook Services</li>
-            <li>Doorstep Service</li>
-        </ul>
-    </section>
+<header>
+  <h1>The GizmO IT Service</h1>
+  <p>Doorstep Computer & Laptop Repair – Bangalore & Mysore</p>
+  <nav class="nav justify-content-center">
+    <a class="nav-link" href="#home">Home</a>
+    <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#gallery">Gallery</a>
+    <a class="nav-link" href="#contact">Contact</a>
+  </nav>
+</header>
 
-    <section class="contact">
-        <h2>Contact Us</h2>
-        <p>📞 Phone: 8431944493</p>
-        <p>📧 Email: gizmorepair6@gmail.com</p>
-        <p>📍 Locations: Bangalore & Mysore</p>
-        <a href="/book" class="cta-button">Book a Service</a>
-    </section>
+<section id="home" class="container py-5">
+  <h2 class="text-center">Welcome to The GizmO IT Service</h2>
+  <p class="lead text-center">
+    Reliable doorstep support for all your computer and laptop needs — from virus removal to RAM and motherboard upgrades — across Bangalore and Mysore.
+  </p>
+  <div class="text-center">
+    <a href="#contact" class="btn cta-btn btn-lg">Book a Service Now</a>
+  </div>
+</section>
+
+<section id="services" class="container py-5 bg-light">
+  <h2 class="mb-4 text-center">Our Services</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card service-card p-3">
+        <h5>Doorstep Repair</h5>
+        <p>Desktop, Laptop & MacBook repair at your home or office.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card service-card p-3">
+        <h5>Motherboard & RAM Upgrades</h5>
+        <p>Boost your device with new motherboards, RAM, and SSD upgrades.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card service-card p-3">
+        <h5>Virus Removal</h5>
+        <p>Full cleanup, antivirus installation, and speed optimization.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" class="container py-5">
+  <h2 class="text-center mb-4">Our Work Gallery</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <img src="images/repair1.jpg" alt="Repair 1" class="gallery-img" />
+    </div>
+    <div class="col-md-4 mb-4">
+      <img src="images/repair2.jpg" alt="Repair 2" class="gallery-img" />
+    </div>
+    <div class="col-md-4 mb-4">
+      <img src="images/repair3.jpg" alt="Repair 3" class="gallery-img" />
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="container py-5 bg-light">
+  <h2 class="text-center mb-4">Contact Us</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <p><strong>Phone / WhatsApp:</strong> <a href="https://wa.me/918431944493">+91 84319 44493</a></p>
+      <p><strong>Email:</strong> <a href="mailto:gizmorepair6@gmail.com">gizmorepair6@gmail.com</a></p>
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <input type="text" class="form-control" placeholder="Your Name" required />
+          </div>
+          <div class="form-group col-md-6">
+            <input type="tel" class="form-control" placeholder="Phone Number" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+        </div>
+        <button type="submit" class="btn cta-btn btn-block">Submit Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 The GizmO IT Service – Bangalore & Mysore</p>
+</footer>
+
+<a href="https://wa.me/918431944493" class="whatsapp-button" target="_blank" title="Chat with us on WhatsApp">🟢</a>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Book a Service</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header>
-        <h1>Book a Service</h1>
-        <a href="/" class="cta-button">Back to Home</a>
-    </header>
+"""
 
-    <form class="booking-form" method="POST">
-        <label>Name: <input type="text" name="name" required></label>
-        <label>Phone: <input type="tel" name="phone" required></label>
-        <label>City: 
-            <select name="city">
-                <option>Bangalore</option>
-                <option>Mysore</option>
-            </select>
-        </label>
-        <label>Problem Description:<br><textarea name="description" rows="4"></textarea></label>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>About Us - The GizmO IT Service</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header>
-        <h1>About The GizmO IT Service</h1>
-        <a href="/" class="cta-button">Back to Home</a>
-    </header>
-    <section>
-        <p>We offer doorstep computer repair and IT support in Bangalore and Mysore. From laptop upgrades to virus removal and MacBook service, we handle all your tech needs.</p>
-        <p>Our expert technicians are just a call away. Trust, speed, and transparency – that’s our promise.</p>
-    </section>
-</body>
-</html>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f5f5f5;
-}
-header {
-    background: #002B5B;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-.logo {
-    width: 100px;
-    margin-bottom: 10px;
-}
-.cta-button {
-    background-color: #0078D7;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
-}
-.services, .contact, form {
-    padding: 20px;
-    background: white;
-    margin: 20px;
-}
-.booking-form label {
-    display: block;
-    margin-bottom: 10px;
-}
-.booking-form input, .booking-form textarea, .booking-form select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-}
-.booking-form button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #0078D7;
-    color: white;
-    border: none;
-}
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f5f5f5;
-}
-header {
-    background: #002B5B;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-.logo {
-    width: 100px;
-    margin-bottom: 10px;
-}
-.cta-button {
-    background-color: #0078D7;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
-}
-.services, .contact, form {
-    padding: 20px;
-    background: white;
-    margin: 20px;
-}
-.booking-form label {
-    display: block;
-    margin-bottom: 10px;
-}
-.booking-form input, .booking-form textarea, .booking-form select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-}
-.booking-form button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #0078D7;
-    color: white;
-    border: none;
+# Save HTML
+with open(os.path.join(base_path, "index.html"), "w") as f:
+    f.write(index_html)
+
+# Add placeholder images
+for i in range(1, 4):
+    with open(os.path.join(gallery_path, f"repair{i}.jpg"), "wb") as img:
+        img.write(b"\xFF\xD8\xFF\xE0" + b"\x00" * 1024 + b"\xFF\xD9")  # dummy JPEG file
+
+# Create ZIP
+zip_path = "/mnt/data/the_gizmo_it_service_website.zip"
+with ZipFile(zip_path, 'w') as zipf:
+    for root, dirs, files in os.walk(base_path):
+        for file in files:
+            full_path = os.path.join(root, file)
+            arcname = os.path.relpath(full_path, base_path)
+            zipf.write(full_path, arcname)
+
+zip_path
