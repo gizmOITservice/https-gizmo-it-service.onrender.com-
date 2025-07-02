@@ -1,6 +1,6 @@
 # Create a full website package as a ZIP file with index.html and placeholder images
 
-import os 
+import os
 from zipfile import ZipFile
 
 # Directory structure
