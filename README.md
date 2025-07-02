@@ -159,47 +159,5 @@ header {
     color: white;
     border: none;
 }
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f5f5f5;
-}
-header {
-    background: #002B5B;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-.logo {
-    width: 100px;
-    margin-bottom: 10px;
-}
-.cta-button {
-    background-color: #0078D7;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
-}
-.services, .contact, form {
-    padding: 20px;
-    background: white;
-    margin: 20px;
-}
-.booking-form label {
-    display: block;
-    margin-bottom: 10px;
-}
-.booking-form input, .booking-form textarea, .booking-form select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-}
-.booking-form button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #0078D7;
-    color: white;
-    border: none;
+flask
+python-3.10
